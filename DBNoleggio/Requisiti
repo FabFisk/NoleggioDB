@@ -1,0 +1,12 @@
+Autonoleggio.
+
+Macchina 
+id, modello, targa / get&set
+
+Persona 
+id, nome, cognome, codfisc / get&set
+
+Servizi
+1- + aggiungiMacchina(modello, targa): Macchina
+2- + aggiungiPersona(nome, cognome, cofisc): Persona
+3- + noleggia(Persona, Macchina): boolean
