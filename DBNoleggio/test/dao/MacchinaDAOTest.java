@@ -2,23 +2,15 @@ package dao;
 
 import static org.junit.Assert.*;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.Map;
 
 import model.Macchina;
-import model.Persona;
+import dao.PersonaDAO;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.Test;
 
-import utility.DataSource;
-
 public class MacchinaDAOTest {
-
+	
 	static MacchinaDAO mDAO = new MacchinaDAO();
 		
 	@Test
@@ -47,6 +39,36 @@ public class MacchinaDAOTest {
 		assertTrue(token);
 		assertNotNull(m);
 		assertEquals(id1, id2);
+	}
+	
+	@Test
+	public void readTest3() {
+		int id1 = mDAO.createMacchina("AAA", "AAA01");
+		int id2 = mDAO.createMacchina("AAA", "AAA01");
+		int id3 = mDAO.createMacchina("AAA", "AAA01");
+		Map<Integer, Macchina> c = mDAO.readAll();
+		mDAO.deleteMacchina(id1);
+		mDAO.deleteMacchina(id2);
+		mDAO.deleteMacchina(id3);		
+		assertNotNull(c);
+	}
+	
+	@Test
+	public void readTest4() {
+		PersonaDAO pDAO = new PersonaDAO();
+		Persona_MacchinaDAO nDAO = new Persona_MacchinaDAO();
+		int id1 = mDAO.createMacchina("AAA", "AAA01");
+		int id2 = mDAO.createMacchina("AAA", "AAA01");
+		int id4 = pDAO.createPersona("AAA", "AAA", "AAA01");
+		nDAO.createNoleggio(id4, id1);
+		nDAO.createNoleggio(id4, id2);
+		Map<Integer, Macchina> m = mDAO.readAllMacchine(id4);
+		
+		mDAO.deleteMacchina(id1);
+		mDAO.deleteMacchina(id2);
+		pDAO.deletePersona(id4);
+		
+		assertNotNull(m);
 	}
 	
 	@Test

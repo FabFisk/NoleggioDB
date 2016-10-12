@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import model.Macchina;
 import utility.DataSource;
@@ -37,6 +39,69 @@ public class MacchinaDAO {
 	}
 	
 	//READ
+	public Map<Integer, Macchina> readAll(){
+		Macchina m = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Map<Integer, Macchina> lista = new TreeMap<Integer, Macchina>();
+		try {
+			String sql = "SELECT * FROM MACCHINA";
+			Connection con = DataSource.getInstance().getConnection();
+			st = con.prepareStatement(sql);
+			rs = st.executeQuery();
+			while(rs.next()){
+					int id_p = rs.getInt(1);
+					String modello = rs.getString(2);
+					String targa = rs.getString(3);
+					m = new Macchina(id_p, modello, targa);
+					lista.put(m.getId_macchina(), m);
+			}
+		} catch (SQLException | IOException | PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if (st != null)
+				try {
+					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}		
+		return lista;
+	}
+	
+	public Map<Integer, Macchina> readAllMacchine(int id){
+		Macchina m = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Map<Integer, Macchina> lista = new TreeMap<Integer, Macchina>();
+		try {
+			String sql = "SELECT MACCHINA.ID_MACCHINA, MACCHINA.MODELLO, MACCHINA.TARGA FROM MACCHINA, PERSONA, PERSONA_MACCHINA WHERE PERSONA_MACCHINA .ID_PERSONA = ? AND PERSONA_MACCHINA .ID_PERSONA = PERSONA.ID_PERSONA AND PERSONA_MACCHINA .ID_MACCHINA = MACCHINA.ID_MACCHINA";
+			Connection con = DataSource.getInstance().getConnection();
+			st = con.prepareStatement(sql);
+			rs = st.executeQuery();
+			st.setInt(1, id);
+			while(rs.next()){
+					int id_m = rs.getInt(1);
+					String modello = rs.getString(2);
+					String targa = rs.getString(3);
+					m = new Macchina(id_m, modello, targa);
+					lista.put(m.getId_macchina(), m);
+			}
+		} catch (SQLException | IOException | PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if (st != null)
+				try {
+					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}		
+		return lista;
+	}
+	
 	public Macchina readMacchina(int id) {
 		Macchina m = null;
 		String sql = "SELECT * FROM MACCHINA WHERE ID_MACCHINA = ?";

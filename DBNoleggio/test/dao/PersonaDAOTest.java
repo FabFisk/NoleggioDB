@@ -1,10 +1,11 @@
 package dao;
 
 import static org.junit.Assert.*;
-import model.Macchina;
+
+import java.util.Map;
+
 import model.Persona;
 
-import org.junit.AfterClass;
 import org.junit.Test;
 
 public class PersonaDAOTest {
@@ -39,6 +40,18 @@ public class PersonaDAOTest {
 		assertEquals(id1, id2);
 	}
 	
+	@Test
+	public void readTest3() {
+		int id1 = pDAO.createPersona("AAA", "AAA", "AAA01");
+		int id2 = pDAO.createPersona("AAA", "AAA", "AAA01");
+		int id3 = pDAO.createPersona("AAA", "AAA", "AAA01");
+		Map<Integer, Persona> c = pDAO.readAll();
+		pDAO.deletePersona(id1);
+		pDAO.deletePersona(id2);
+		pDAO.deletePersona(id3);		
+		assertNotNull(c);
+	}
+		
 	@Test
 	public void updateTest() {
 		int id = pDAO.createPersona("AAA", "AAA", "AAA01");

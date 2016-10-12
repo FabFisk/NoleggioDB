@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import model.Persona;
 import utility.DataSource;
@@ -38,6 +40,38 @@ public class PersonaDAO {
 	}
 	
 	//READ
+	public Map<Integer, Persona> readAll(){
+		Persona p = null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		Map<Integer, Persona> lista = new TreeMap<Integer, Persona>();
+		try {
+			String sql = "SELECT * FROM PERSONA";
+			Connection con = DataSource.getInstance().getConnection();
+			st = con.prepareStatement(sql);
+			rs = st.executeQuery();
+			while(rs.next()){
+					int id_p = rs.getInt(1);
+					String nome = rs.getString(2);
+					String cognome = rs.getString(3);
+					String codFisc = rs.getString(4);
+					p = new Persona(id_p, nome, cognome, codFisc);
+					lista.put(p.getId_persona(), p);
+			}
+		} catch (SQLException | IOException | PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if (st != null)
+				try {
+					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}		
+		return lista;
+	}
+	
 	public Persona readPersona(int id) {
 		Persona p = null;
 		String sql = "SELECT * FROM PERSONA WHERE ID_PERSONA = ?";
