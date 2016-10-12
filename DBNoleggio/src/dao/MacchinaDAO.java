@@ -76,11 +76,14 @@ public class MacchinaDAO {
 		ResultSet rs = null;
 		Map<Integer, Macchina> lista = new TreeMap<Integer, Macchina>();
 		try {
-			String sql = "SELECT MACCHINA.ID_MACCHINA, MACCHINA.MODELLO, MACCHINA.TARGA FROM MACCHINA, PERSONA, PERSONA_MACCHINA WHERE PERSONA_MACCHINA .ID_PERSONA = ? AND PERSONA_MACCHINA .ID_PERSONA = PERSONA.ID_PERSONA AND PERSONA_MACCHINA .ID_MACCHINA = MACCHINA.ID_MACCHINA";
+			String sql = "SELECT MACCHINA.ID_MACCHINA, MACCHINA.MODELLO, MACCHINA.TARGA "
+					+ "FROM MACCHINA, PERSONA_MACCHINA "
+					+ "WHERE PERSONA_MACCHINA .ID_PERSONA = ? "
+					+ "AND PERSONA_MACCHINA .ID_MACCHINA = MACCHINA.ID_MACCHINA";
 			Connection con = DataSource.getInstance().getConnection();
 			st = con.prepareStatement(sql);
-			rs = st.executeQuery();
 			st.setInt(1, id);
+			rs = st.executeQuery();
 			while(rs.next()){
 					int id_m = rs.getInt(1);
 					String modello = rs.getString(2);
