@@ -18,7 +18,7 @@ public class Persona_MacchinaDAO {
 		PreparedStatement st;
 		try {
 			con = DataSource.getInstance().getConnection();
-			st = con.prepareStatement(sql, new String[]{"ID_MACCHINA"});
+			st = con.prepareStatement(sql);
 			st.setInt(1, id_persona);
 			st.setInt(2, id_macchina);
 			int res = st.executeUpdate();		
