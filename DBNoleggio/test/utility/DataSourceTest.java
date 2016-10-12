@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.junit.AfterClass;
 import org.junit.Test;
 
 public class DataSourceTest {
